@@ -1,12 +1,5 @@
 package com.katiacammisa.mycar.home
 
-import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.Composable
-import com.katiacammisa.mycar.home.data.ActivityType
-import com.katiacammisa.mycar.home.data.ActivityUi
-import com.katiacammisa.mycar.home.data.CarSummaryUi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,14 +23,13 @@ import androidx.compose.material.icons.outlined.KeyboardArrowRight
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DividerDefaults
-import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -45,6 +37,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.katiacammisa.mycar.home.data.ActivityType
+import com.katiacammisa.mycar.home.data.ActivityUi
+import com.katiacammisa.mycar.home.data.CarSummaryUi
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -52,81 +47,56 @@ fun FamilyCarsHomeScreen(
     modifier: Modifier = Modifier,
     cars: List<CarSummaryUi> = previewCars,
     latestActivities: List<ActivityUi> = previewActivities,
-    onAddCarClick: () -> Unit = {},
     onCarClick: (CarSummaryUi) -> Unit = {},
     onActivityClick: (ActivityUi) -> Unit = {},
 ) {
-    Scaffold(
-        modifier = modifier.fillMaxSize(),
-        topBar = {
-            TopAppBar(
-                title = {
-                    Column {
-                        Text(
-                            text = "Family Cars",
-                            style = MaterialTheme.typography.titleLarge,
-                            fontWeight = FontWeight.Bold,
-                        )
-                        Text(
-                            text = "Track vehicles and recent service history",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface,
-                ),
+    LazyColumn(
+        modifier = modifier
+            .fillMaxSize(),
+        contentPadding = PaddingValues(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        item {
+            Text(
+                text = "Family Cars",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
             )
-        },
-        floatingActionButton = {
-            FloatingActionButton(onClick = onAddCarClick) {
-                Icon(
-                    imageVector = Icons.Outlined.Add,
-                    contentDescription = "Add car",
-                )
-            }
-        },
-    ) { innerPadding ->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding),
-            contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
-            item {
-                WelcomeHeader(
-                    totalCars = cars.size,
-                    totalActivities = latestActivities.size,
-                )
-            }
+            Text(
+                text = "Track vehicles and recent service history",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            WelcomeHeader(
+                totalCars = cars.size,
+                totalActivities = latestActivities.size,
+            )
+        }
 
-            item {
-                SectionTitle(title = "My Cars")
-            }
+        item {
+            SectionTitle(title = "My Cars")
+        }
 
-            items(cars, key = { it.id }) { car ->
-                CarSummaryCard(
-                    car = car,
-                    onClick = { onCarClick(car) },
-                )
-            }
+        items(cars, key = { it.id }) { car ->
+            CarSummaryCard(
+                car = car,
+                onClick = { onCarClick(car) },
+            )
+        }
 
-            item {
-                SectionTitle(title = "Latest Activity")
-            }
+        item {
+            SectionTitle(title = "Latest Activity")
+        }
 
-            items(latestActivities, key = { it.id }) { activity ->
-                ActivityCard(
-                    activity = activity,
-                    onClick = { onActivityClick(activity) },
-                )
-            }
+        items(latestActivities, key = { it.id }) { activity ->
+            ActivityCard(
+                activity = activity,
+                onClick = { onActivityClick(activity) },
+            )
+        }
 
-            item {
-                Spacer(modifier = Modifier.height(80.dp))
-            }
+        item {
+            Spacer(modifier = Modifier.height(80.dp))
         }
     }
 }

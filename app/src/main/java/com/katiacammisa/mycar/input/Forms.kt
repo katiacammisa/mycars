@@ -1,7 +1,5 @@
 package com.katiacammisa.mycar.input
 
-import androidx.compose.material.icons.outlined.AddCircle
-import androidx.compose.material3.TopAppBar
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,6 +14,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AddCircle
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -28,12 +27,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -56,81 +53,65 @@ fun FamilyCarsEntryScreen(
 ) {
     var selectedMode by rememberSaveable { mutableStateOf(FormMode.CAR) }
 
-    Scaffold(
-        modifier = modifier.fillMaxSize(),
-        topBar = {
-            TopAppBar(
-                title = {
-                    Column {
-                        Text(
-                            text = "Add Information",
-                            style = MaterialTheme.typography.titleLarge,
-                            fontWeight = FontWeight.Bold,
-                        )
-                        Text(
-                            text = "Register a new car or log a maintenance activity",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface,
-                ),
-            )
-        },
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .padding(horizontal = 16.dp, vertical = 12.dp),
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp, vertical = 12.dp),
+    ) {
+        Text(
+            text = "Add Information",
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold,
+        )
+        Text(
+            text = "Register a new car or log a maintenance activity",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        SingleChoiceSegmentedButtonRow(
+            modifier = Modifier.fillMaxWidth(),
         ) {
-            SingleChoiceSegmentedButtonRow(
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                SegmentedButton(
-                    selected = selectedMode == FormMode.CAR,
-                    onClick = { selectedMode = FormMode.CAR },
-                    shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2),
-                    icon = {
-                        Icon(
-                            imageVector = Icons.Outlined.AddCircle,
-                            contentDescription = null,
-                        )
-                    },
-                    label = { Text("New Car") },
-                )
-                SegmentedButton(
-                    selected = selectedMode == FormMode.ACTIVITY,
-                    onClick = { selectedMode = FormMode.ACTIVITY },
-                    shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2),
-                    icon = {
-                        Icon(
-                            imageVector = Icons.Outlined.AddCircle,
-                            contentDescription = null,
-                        )
-                    },
-                    label = { Text("New Activity") },
+            SegmentedButton(
+                selected = selectedMode == FormMode.CAR,
+                onClick = { selectedMode = FormMode.CAR },
+                shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2),
+                icon = {
+                    Icon(
+                        imageVector = Icons.Outlined.AddCircle,
+                        contentDescription = null,
+                    )
+                },
+                label = { Text("New Car") },
+            )
+            SegmentedButton(
+                selected = selectedMode == FormMode.ACTIVITY,
+                onClick = { selectedMode = FormMode.ACTIVITY },
+                shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2),
+                icon = {
+                    Icon(
+                        imageVector = Icons.Outlined.AddCircle,
+                        contentDescription = null,
+                    )
+                },
+                label = { Text("New Activity") },
+            )
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        when (selectedMode) {
+            FormMode.CAR -> {
+                AddCarForm(
+                    onSave = onSaveCar,
+                    onCancel = onCancel,
                 )
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
-
-            when (selectedMode) {
-                FormMode.CAR -> {
-                    AddCarForm(
-                        onSave = onSaveCar,
-                        onCancel = onCancel,
-                    )
-                }
-
-                FormMode.ACTIVITY -> {
-                    AddActivityForm(
-                        onSave = onSaveActivity,
-                        onCancel = onCancel,
-                    )
-                }
+            FormMode.ACTIVITY -> {
+                AddActivityForm(
+                    onSave = onSaveActivity,
+                    onCancel = onCancel,
+                )
             }
         }
     }
