@@ -58,16 +58,6 @@ fun FamilyCarsEntryScreen(
             .fillMaxSize()
             .padding(horizontal = 16.dp, vertical = 12.dp),
     ) {
-        Text(
-            text = "Add Information",
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold,
-        )
-        Text(
-            text = "Register a new car or log a maintenance activity",
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
         SingleChoiceSegmentedButtonRow(
             modifier = Modifier.fillMaxWidth(),
         ) {

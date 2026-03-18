@@ -1,0 +1,35 @@
+package com.katiacammisa.mycar.navigation
+
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import com.katiacammisa.mycar.home.FamilyCarsHomeScreen
+import com.katiacammisa.mycar.input.FamilyCarsEntryScreen
+import com.katiacammisa.mycar.profile.FamilyProfileScreen
+
+@RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
+@Composable
+fun NavHostComposable(innerPadding: PaddingValues, navController: NavHostController) {
+    NavHost(
+        navController = navController,
+        startDestination = MyCarScreen.Home.name,
+        modifier = Modifier.fillMaxSize().padding(innerPadding)
+    ) {
+        composable(route = MyCarScreen.Home.name) {
+            FamilyCarsHomeScreen()
+        }
+        composable(route = MyCarScreen.Add.name) {
+            FamilyCarsEntryScreen()
+        }
+        composable(route = MyCarScreen.Profile.name) {
+            FamilyProfileScreen(familyName = "Familia Cammisa")
+        }
+    }
+}

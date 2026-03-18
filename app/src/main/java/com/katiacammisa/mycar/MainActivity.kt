@@ -1,37 +1,34 @@
 package com.katiacammisa.mycar
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import com.katiacammisa.mycar.home.FamilyCarsHomeScreen
-import com.katiacammisa.mycar.input.FamilyCarsEntryScreen
-import com.katiacammisa.mycar.profile.FamilyProfileScreen
+import androidx.navigation.compose.rememberNavController
+import com.katiacammisa.mycar.navigation.BottomBar
+import com.katiacammisa.mycar.navigation.NavHostComposable
 import com.katiacammisa.mycar.ui.theme.MyCarTheme
 
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             MyCarTheme {
+                val navController = rememberNavController()
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
+                    bottomBar = {
+                        BottomBar(navController::navigate)
+                    }
                 ) { innerPadding ->
-                    FamilyCarsHomeScreen(
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                    FamilyCarsEntryScreen(
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                    FamilyProfileScreen(
-                        modifier = Modifier.padding(innerPadding),
-                        familyName = "Familia Cammisa"
-                    )
+                    NavHostComposable(innerPadding, navController)
                 }
             }
         }

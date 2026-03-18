@@ -57,16 +57,6 @@ fun FamilyCarsHomeScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         item {
-            Text(
-                text = "Family Cars",
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
-            )
-            Text(
-                text = "Track vehicles and recent service history",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
             WelcomeHeader(
                 totalCars = cars.size,
                 totalActivities = latestActivities.size,
