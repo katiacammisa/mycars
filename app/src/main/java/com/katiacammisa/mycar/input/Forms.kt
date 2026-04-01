@@ -26,6 +26,7 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -54,6 +55,7 @@ fun AddActivityForm(
 
     val addedCars by viewModel.addedCars.collectAsStateWithLifecycle()
     val addedActivities by viewModel.addedActivities.collectAsStateWithLifecycle()
+    val catalogState by viewModel.catalogState.collectAsStateWithLifecycle()
 
     val tabTitles = remember {
         listOf("New Activity", "New Car", "Saved")
@@ -95,6 +97,11 @@ fun AddActivityForm(
                 )
 
                 1 -> AddCarTab(
+                    makes = catalogState.makes,
+                    modelsByMake = catalogState.modelsByMake,
+                    isCatalogLoading = catalogState.isLoading,
+                    catalogError = catalogState.error,
+                    onRetryCatalog = viewModel::loadCatalog,
                     onSave = {
                         viewModel.addCar(it)
                         selectedTab = 2
@@ -286,8 +293,14 @@ private fun AddActivityTab(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AddCarTab(
+    makes: List<String>,
+    modelsByMake: Map<String, List<String>>,
+    isCatalogLoading: Boolean,
+    catalogError: String?,
+    onRetryCatalog: () -> Unit,
     onSave: (CarSummaryUi) -> Unit,
     onCancel: () -> Unit,
 ) {
@@ -297,6 +310,26 @@ private fun AddCarTab(
     var year by rememberSaveable { mutableStateOf("") }
     var plate by rememberSaveable { mutableStateOf("") }
     var mileage by rememberSaveable { mutableStateOf("") }
+
+    var makeExpanded by remember { mutableStateOf(false) }
+    var modelExpanded by remember { mutableStateOf(false) }
+
+    val hasCatalog = makes.isNotEmpty()
+    val selectedModels = remember(make, modelsByMake) {
+        modelsByMake[make].orEmpty()
+    }
+
+    LaunchedEffect(makes) {
+        if (make.isBlank() && makes.isNotEmpty()) {
+            make = makes.first()
+        }
+    }
+
+    LaunchedEffect(make, selectedModels) {
+        if (selectedModels.isNotEmpty() && model !in selectedModels) {
+            model = selectedModels.first()
+        }
+    }
 
     val canSave = nickname.isNotBlank() && make.isNotBlank() && model.isNotBlank() && year.isNotBlank()
 
@@ -311,6 +344,23 @@ private fun AddCarTab(
             subtitle = "Create a vehicle to assign future activities",
         )
 
+        if (isCatalogLoading) {
+            Text(
+                text = "Loading make/model catalog...",
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+
+        if (catalogError != null) {
+            Text(
+                text = catalogError,
+                color = MaterialTheme.colorScheme.error,
+            )
+            OutlinedButton(onClick = onRetryCatalog) {
+                Text("Retry")
+            }
+        }
+
         OutlinedTextField(
             value = nickname,
             onValueChange = { nickname = it },
@@ -321,22 +371,101 @@ private fun AddCarTab(
         )
 
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            OutlinedTextField(
-                value = make,
-                onValueChange = { make = it },
+            ExposedDropdownMenuBox(
+                expanded = makeExpanded,
+                onExpandedChange = {
+                    if (hasCatalog) {
+                        makeExpanded = !makeExpanded
+                    }
+                },
                 modifier = Modifier.weight(1f),
-                label = { Text("Make") },
-                placeholder = { Text("Toyota") },
-                singleLine = true,
-            )
-            OutlinedTextField(
-                value = model,
-                onValueChange = { model = it },
+            ) {
+                OutlinedTextField(
+                    value = make,
+                    onValueChange = {
+                        if (!hasCatalog) {
+                            make = it
+                        }
+                    },
+                    modifier = Modifier
+                        .menuAnchor(MenuAnchorType.PrimaryEditable, true)
+                        .fillMaxWidth(),
+                    readOnly = hasCatalog,
+                    label = { Text("Make") },
+                    placeholder = { Text("Toyota") },
+                    trailingIcon = {
+                        if (hasCatalog) {
+                            ExposedDropdownMenuDefaults.TrailingIcon(expanded = makeExpanded)
+                        }
+                    },
+                    singleLine = true,
+                )
+
+                if (hasCatalog) {
+                    ExposedDropdownMenu(
+                        expanded = makeExpanded,
+                        onDismissRequest = { makeExpanded = false },
+                    ) {
+                        makes.forEach { makeItem ->
+                            DropdownMenuItem(
+                                text = { Text(makeItem) },
+                                onClick = {
+                                    make = makeItem
+                                    makeExpanded = false
+                                },
+                            )
+                        }
+                    }
+                }
+            }
+
+            ExposedDropdownMenuBox(
+                expanded = modelExpanded,
+                onExpandedChange = {
+                    if (selectedModels.isNotEmpty()) {
+                        modelExpanded = !modelExpanded
+                    }
+                },
                 modifier = Modifier.weight(1f),
-                label = { Text("Model") },
-                placeholder = { Text("Corolla") },
-                singleLine = true,
-            )
+            ) {
+                OutlinedTextField(
+                    value = model,
+                    onValueChange = {
+                        if (selectedModels.isEmpty()) {
+                            model = it
+                        }
+                    },
+                    modifier = Modifier
+                        .menuAnchor(MenuAnchorType.PrimaryEditable, true)
+                        .fillMaxWidth(),
+                    readOnly = selectedModels.isNotEmpty(),
+                    label = { Text("Model") },
+                    placeholder = { Text("Corolla") },
+                    trailingIcon = {
+                        if (selectedModels.isNotEmpty()) {
+                            ExposedDropdownMenuDefaults.TrailingIcon(expanded = modelExpanded)
+                        }
+                    },
+                    singleLine = true,
+                )
+
+                if (selectedModels.isNotEmpty()) {
+                    ExposedDropdownMenu(
+                        expanded = modelExpanded,
+                        onDismissRequest = { modelExpanded = false },
+                    ) {
+                        selectedModels.forEach { modelItem ->
+                            DropdownMenuItem(
+                                text = { Text(modelItem) },
+                                onClick = {
+                                    model = modelItem
+                                    modelExpanded = false
+                                },
+                            )
+                        }
+                    }
+                }
+            }
         }
 
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
