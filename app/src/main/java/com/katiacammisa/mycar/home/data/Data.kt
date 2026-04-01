@@ -20,10 +20,19 @@ data class ActivityUi(
     val type: ActivityType,
 )
 
-enum class ActivityType {
-    OIL_CHANGE,
-    TIRE_CHANGE,
-    INSPECTION,
-    FUEL,
-    GENERAL_SERVICE,
+enum class ActivityType(val displayName: String) {
+    OIL_CHANGE("Oil Change"),
+    TIRE_CHANGE("Tire Change"),
+    BRAKE_SERVICE("Brake Service"),
+    BATTERY_CHECK("Battery Check"),
+    INSPECTION("General Inspection"),
+    FUEL("Fuel"),
+    GENERAL_SERVICE("General Service"),
+    OTHER("Other");
+
+    companion object {
+        fun fromDisplayName(displayName: String): ActivityType {
+            return entries.find { it.displayName == displayName } ?: OTHER
+        }
+    }
 }

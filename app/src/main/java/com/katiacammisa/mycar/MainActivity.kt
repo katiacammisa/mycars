@@ -13,7 +13,9 @@ import androidx.navigation.compose.rememberNavController
 import com.katiacammisa.mycar.navigation.BottomBar
 import com.katiacammisa.mycar.navigation.NavHostComposable
 import com.katiacammisa.mycar.ui.theme.MyCarTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     override fun onCreate(savedInstanceState: Bundle?) {

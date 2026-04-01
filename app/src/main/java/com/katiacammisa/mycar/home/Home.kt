@@ -173,7 +173,7 @@ private fun SectionTitle(
 }
 
 @Composable
-private fun CarSummaryCard(
+fun CarSummaryCard(
     car: CarSummaryUi,
     onClick: () -> Unit,
 ) {
@@ -237,7 +237,7 @@ private fun CarSummaryCard(
 }
 
 @Composable
-private fun ActivityCard(
+fun ActivityCard(
     activity: ActivityUi,
     onClick: () -> Unit,
 ) {
@@ -311,17 +311,23 @@ private fun ActivityIcon(
     val icon = when (type) {
         ActivityType.OIL_CHANGE -> Icons.Outlined.Build
         ActivityType.TIRE_CHANGE -> Icons.Outlined.Build
+        ActivityType.BRAKE_SERVICE -> Icons.Outlined.Build
+        ActivityType.BATTERY_CHECK -> Icons.Outlined.Build
         ActivityType.INSPECTION -> Icons.Outlined.Build
         ActivityType.FUEL -> Icons.Outlined.Build
         ActivityType.GENERAL_SERVICE -> Icons.Outlined.Build
+        ActivityType.OTHER -> Icons.Outlined.Build
     }
 
     val background = when (type) {
         ActivityType.OIL_CHANGE -> Color(0xFFE8F0FE)
         ActivityType.TIRE_CHANGE -> Color(0xFFFFF4E5)
+        ActivityType.BRAKE_SERVICE -> Color(0xFFE9F7EF)
+        ActivityType.BATTERY_CHECK -> Color(0xFFF3E8FF)
         ActivityType.INSPECTION -> Color(0xFFE9F7EF)
         ActivityType.FUEL -> Color(0xFFF3E8FF)
         ActivityType.GENERAL_SERVICE -> Color(0xFFFFEBEE)
+        ActivityType.OTHER -> Color(0xFFF5F5F5)
     }
 
     Box(

@@ -11,7 +11,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.katiacammisa.mycar.home.FamilyCarsHomeScreen
-import com.katiacammisa.mycar.input.FamilyCarsEntryScreen
+import com.katiacammisa.mycar.input.AddActivityForm
 import com.katiacammisa.mycar.profile.FamilyProfileScreen
 
 @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
@@ -26,7 +26,7 @@ fun NavHostComposable(innerPadding: PaddingValues, navController: NavHostControl
             FamilyCarsHomeScreen()
         }
         composable(route = MyCarScreen.Add.name) {
-            FamilyCarsEntryScreen()
+            AddActivityForm()
         }
         composable(route = MyCarScreen.Profile.name) {
             FamilyProfileScreen(familyName = "Familia Cammisa")
