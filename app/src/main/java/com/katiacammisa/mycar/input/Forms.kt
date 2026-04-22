@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -18,6 +20,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.OutlinedButton
@@ -112,6 +116,8 @@ fun AddActivityForm(
                 else -> SavedItemsTab(
                     addedCars = addedCars,
                     addedActivities = addedActivities,
+                    onDeleteCar = viewModel::deleteCar,
+                    onDeleteActivity = viewModel::deleteActivity,
                 )
             }
         }
@@ -523,6 +529,8 @@ private fun AddCarTab(
 private fun SavedItemsTab(
     addedCars: List<CarSummaryUi>,
     addedActivities: List<ActivityUi>,
+    onDeleteCar: (CarSummaryUi) -> Unit,
+    onDeleteActivity: (ActivityUi) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -532,7 +540,7 @@ private fun SavedItemsTab(
     ) {
         FormHeader(
             title = "Saved Records",
-            subtitle = "Cars and activities currently in the view model",
+            subtitle = "Cars and activities saved in local storage",
         )
 
         Text(
@@ -547,7 +555,21 @@ private fun SavedItemsTab(
             )
         } else {
             addedCars.forEach { car ->
-                Text("${car.nickname} - ${car.make} ${car.model} (${car.year})")
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    Text(
+                        text = "${car.nickname} - ${car.make} ${car.model} (${car.year})",
+                        modifier = Modifier.weight(1f),
+                    )
+                    IconButton(onClick = { onDeleteCar(car) }) {
+                        Icon(
+                            imageVector = Icons.Outlined.Delete,
+                            contentDescription = "Delete car",
+                        )
+                    }
+                }
             }
         }
 
@@ -565,7 +587,21 @@ private fun SavedItemsTab(
             )
         } else {
             addedActivities.forEach { activity ->
-                Text("${activity.date} - ${activity.title} (${activity.carName})")
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    Text(
+                        text = "${activity.date} - ${activity.title} (${activity.carName})",
+                        modifier = Modifier.weight(1f),
+                    )
+                    IconButton(onClick = { onDeleteActivity(activity) }) {
+                        Icon(
+                            imageVector = Icons.Outlined.Delete,
+                            contentDescription = "Delete activity",
+                        )
+                    }
+                }
             }
         }
     }

@@ -18,18 +18,21 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
 import androidx.compose.material.icons.outlined.Build
-import androidx.compose.material.icons.outlined.KeyboardArrowRight
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,9 +40,31 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.katiacammisa.mycar.home.data.ActivityType
 import com.katiacammisa.mycar.home.data.ActivityUi
 import com.katiacammisa.mycar.home.data.CarSummaryUi
+
+@Composable
+fun FamilyCarsHomeRoute(
+    modifier: Modifier = Modifier,
+    viewModel: HomeViewModel = hiltViewModel(),
+    onCarClick: (CarSummaryUi) -> Unit = {},
+    onActivityClick: (ActivityUi) -> Unit = {},
+) {
+    val cars by viewModel.cars.collectAsStateWithLifecycle()
+    val latestActivities by viewModel.activities.collectAsStateWithLifecycle()
+
+    FamilyCarsHomeScreen(
+        modifier = modifier,
+        cars = cars,
+        latestActivities = latestActivities,
+        onCarClick = onCarClick,
+        onActivityClick = onActivityClick,
+        onDeleteActivity = { activity -> viewModel.deleteActivity(activity.id) },
+    )
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -49,6 +74,7 @@ fun FamilyCarsHomeScreen(
     latestActivities: List<ActivityUi> = previewActivities,
     onCarClick: (CarSummaryUi) -> Unit = {},
     onActivityClick: (ActivityUi) -> Unit = {},
+    onDeleteActivity: (ActivityUi) -> Unit = {},
 ) {
     LazyColumn(
         modifier = modifier
@@ -82,6 +108,7 @@ fun FamilyCarsHomeScreen(
             ActivityCard(
                 activity = activity,
                 onClick = { onActivityClick(activity) },
+                onDelete = { onDeleteActivity(activity) },
             )
         }
 
@@ -228,7 +255,7 @@ fun CarSummaryCard(
             }
 
             Icon(
-                imageVector = Icons.Outlined.KeyboardArrowRight,
+                imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowRight,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -240,6 +267,7 @@ fun CarSummaryCard(
 fun ActivityCard(
     activity: ActivityUi,
     onClick: () -> Unit,
+    onDelete: () -> Unit,
 ) {
     Card(
         onClick = onClick,
@@ -281,6 +309,12 @@ fun ActivityCard(
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
+                IconButton(onClick = onDelete) {
+                    Icon(
+                        imageVector = Icons.Outlined.Delete,
+                        contentDescription = "Delete activity",
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(12.dp))
