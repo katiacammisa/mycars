@@ -61,6 +61,7 @@ dependencies {
     implementation(libs.retrofit.converter.gson)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.biometric)
     ksp(libs.androidx.room.compiler)
 
     testImplementation(libs.junit)
