@@ -19,8 +19,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.katiacammisa.mycar.MainActivity
+import com.katiacammisa.mycar.R
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
@@ -42,9 +44,9 @@ fun NotificationOnboardingScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(text = "Stay up to date")
+        Text(text = stringResource(R.string.notification_onboarding_title))
         Text(
-            text = "Enable notifications to get app reminders and outside updates.",
+            text = stringResource(R.string.notification_onboarding_description),
             modifier = Modifier.padding(top = 8.dp),
         )
 
@@ -60,7 +62,7 @@ fun NotificationOnboardingScreen(
                 .padding(top = 24.dp)
                 .fillMaxWidth(),
         ) {
-            Text("Allow notifications")
+            Text(stringResource(R.string.notification_onboarding_allow))
         }
 
         OutlinedButton(
@@ -69,7 +71,7 @@ fun NotificationOnboardingScreen(
                 .padding(top = 12.dp)
                 .fillMaxWidth(),
         ) {
-            Text("Not now")
+            Text(stringResource(R.string.notification_onboarding_not_now))
         }
     }
 }

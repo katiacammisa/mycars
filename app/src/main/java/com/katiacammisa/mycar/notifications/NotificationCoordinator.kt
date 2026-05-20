@@ -117,8 +117,8 @@ class NotificationCoordinator @Inject constructor(
 
         val notification = NotificationCompat.Builder(app, CHANNEL_ID)
             .setSmallIcon(android.R.drawable.ic_popup_sync)
-            .setContentTitle("Outside update")
-            .setContentText("Your activity feed just received a new update.")
+            .setContentTitle(app.getString(R.string.notification_outside_update_title))
+            .setContentText(app.getString(R.string.notification_outside_update_text))
             .setContentIntent(pendingOpenAppIntent)
             .setAutoCancel(true)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -136,7 +136,7 @@ class NotificationCoordinator @Inject constructor(
             app.getString(R.string.app_name),
             NotificationManager.IMPORTANCE_DEFAULT,
         ).apply {
-            description = "Notifications for garage reminders and updates"
+            description = app.getString(R.string.notification_channel_description)
         }
 
         manager.createNotificationChannel(channel)

@@ -14,9 +14,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.fragment.app.FragmentActivity
+import com.katiacammisa.mycar.R
 
 @Composable
 fun AuthScreen(
@@ -34,8 +36,8 @@ fun AuthScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(text = "Iniciar sesion")
-        Text(text = "Accede con Face ID, huella o codigo del celular")
+        Text(text = stringResource(R.string.auth_title))
+        Text(text = stringResource(R.string.auth_subtitle))
 
         if (canUseBiometric && activity != null) {
             Button(
@@ -46,11 +48,11 @@ fun AuthScreen(
                     viewModel.authenticate(activity, onAuthenticated)
                 },
             ) {
-                Text("Continuar")
+                Text(stringResource(R.string.auth_continue))
             }
         } else {
             Text(
-                text = "Este dispositivo no tiene biometria o codigo habilitado",
+                text = stringResource(R.string.auth_device_not_supported),
                 modifier = Modifier.padding(top = 24.dp),
             )
         }

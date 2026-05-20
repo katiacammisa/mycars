@@ -38,11 +38,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.katiacammisa.mycar.R
 import com.katiacammisa.mycar.home.data.ActivityType
 import com.katiacammisa.mycar.home.data.ActivityUi
 import com.katiacammisa.mycar.home.data.CarSummaryUi
@@ -62,7 +64,11 @@ fun AddActivityForm(
     val catalogState by viewModel.catalogState.collectAsStateWithLifecycle()
 
     val tabTitles = remember {
-        listOf("New Activity", "New Car", "Saved")
+        listOf(
+            R.string.form_tab_new_activity,
+            R.string.form_tab_new_car,
+            R.string.form_tab_saved,
+        )
     }
     var selectedTab by rememberSaveable { mutableIntStateOf(0) }
 
@@ -80,11 +86,11 @@ fun AddActivityForm(
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             TabRow(selectedTabIndex = selectedTab) {
-                tabTitles.forEachIndexed { index, title ->
+                tabTitles.forEachIndexed { index, titleRes ->
                     Tab(
                         selected = selectedTab == index,
                         onClick = { selectedTab = index },
-                        text = { Text(title) },
+                        text = { Text(stringResource(titleRes)) },
                     )
                 }
             }
@@ -155,8 +161,8 @@ private fun AddActivityTab(
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         FormHeader(
-            title = "New Activity",
-            subtitle = "Register a maintenance task or service for a vehicle",
+            title = stringResource(R.string.form_activity_header_title),
+            subtitle = stringResource(R.string.form_activity_header_subtitle),
         )
 
         ExposedDropdownMenuBox(
@@ -168,14 +174,14 @@ private fun AddActivityTab(
             },
         ) {
             OutlinedTextField(
-                value = if (cars.isEmpty()) "Add a car first" else selectedCar,
+                value = if (cars.isEmpty()) stringResource(R.string.form_add_car_first) else selectedCar,
                 onValueChange = {},
                 readOnly = true,
                 enabled = cars.isNotEmpty(),
                 modifier = Modifier
                     .menuAnchor(MenuAnchorType.PrimaryEditable, true)
                     .fillMaxWidth(),
-                label = { Text("Car") },
+                label = { Text(stringResource(R.string.form_label_car)) },
                 trailingIcon = {
                     ExposedDropdownMenuDefaults.TrailingIcon(expanded = carExpanded)
                 },
@@ -207,7 +213,7 @@ private fun AddActivityTab(
                 modifier = Modifier
                     .menuAnchor(MenuAnchorType.PrimaryEditable, true)
                     .fillMaxWidth(),
-                label = { Text("Activity Type") },
+                label = { Text(stringResource(R.string.form_label_activity_type)) },
                 trailingIcon = {
                     ExposedDropdownMenuDefaults.TrailingIcon(expanded = typeExpanded)
                 },
@@ -232,8 +238,8 @@ private fun AddActivityTab(
             value = title,
             onValueChange = { title = it },
             modifier = Modifier.fillMaxWidth(),
-            label = { Text("Title") },
-            placeholder = { Text("Changed front tires") },
+            label = { Text(stringResource(R.string.form_label_title)) },
+            placeholder = { Text(stringResource(R.string.form_placeholder_activity_title)) },
             singleLine = true,
         )
 
@@ -244,8 +250,8 @@ private fun AddActivityTab(
                 value = date,
                 onValueChange = { date = it },
                 modifier = Modifier.weight(1f),
-                label = { Text("Date") },
-                placeholder = { Text("18/03/2026") },
+                label = { Text(stringResource(R.string.form_label_date)) },
+                placeholder = { Text(stringResource(R.string.form_placeholder_date)) },
                 singleLine = true,
             )
 
@@ -253,8 +259,8 @@ private fun AddActivityTab(
                 value = mileage,
                 onValueChange = { mileage = it },
                 modifier = Modifier.weight(1f),
-                label = { Text("Mileage") },
-                placeholder = { Text("42180") },
+                label = { Text(stringResource(R.string.form_label_mileage)) },
+                placeholder = { Text(stringResource(R.string.form_placeholder_mileage)) },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             )
@@ -264,8 +270,8 @@ private fun AddActivityTab(
             value = workshop,
             onValueChange = { workshop = it },
             modifier = Modifier.fillMaxWidth(),
-            label = { Text("Workshop") },
-            placeholder = { Text("Quick Service") },
+            label = { Text(stringResource(R.string.form_label_workshop)) },
+            placeholder = { Text(stringResource(R.string.form_placeholder_workshop)) },
             singleLine = true,
         )
 
@@ -273,13 +279,13 @@ private fun AddActivityTab(
             value = notes,
             onValueChange = { notes = it },
             modifier = Modifier.fillMaxWidth(),
-            label = { Text("Notes") },
-            placeholder = { Text("Extra details about the service performed") },
+            label = { Text(stringResource(R.string.form_label_notes)) },
+            placeholder = { Text(stringResource(R.string.form_placeholder_notes)) },
             minLines = 4,
         )
 
         FormActions(
-            saveText = "Save Activity",
+            saveText = stringResource(R.string.form_save_activity),
             saveEnabled = canSave,
             onSave = {
                 onSave(
@@ -346,13 +352,13 @@ private fun AddCarTab(
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         FormHeader(
-            title = "New Car",
-            subtitle = "Create a vehicle to assign future activities",
+            title = stringResource(R.string.form_car_header_title),
+            subtitle = stringResource(R.string.form_car_header_subtitle),
         )
 
         if (isCatalogLoading) {
             Text(
-                text = "Loading make/model catalog...",
+                text = stringResource(R.string.form_catalog_loading),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
@@ -363,7 +369,7 @@ private fun AddCarTab(
                 color = MaterialTheme.colorScheme.error,
             )
             OutlinedButton(onClick = onRetryCatalog) {
-                Text("Retry")
+                Text(stringResource(R.string.form_retry))
             }
         }
 
@@ -371,8 +377,8 @@ private fun AddCarTab(
             value = nickname,
             onValueChange = { nickname = it },
             modifier = Modifier.fillMaxWidth(),
-            label = { Text("Nickname") },
-            placeholder = { Text("Dad's SUV") },
+            label = { Text(stringResource(R.string.form_label_nickname)) },
+            placeholder = { Text(stringResource(R.string.form_placeholder_nickname)) },
             singleLine = true,
         )
 
@@ -397,8 +403,8 @@ private fun AddCarTab(
                         .menuAnchor(MenuAnchorType.PrimaryEditable, true)
                         .fillMaxWidth(),
                     readOnly = hasCatalog,
-                    label = { Text("Make") },
-                    placeholder = { Text("Toyota") },
+                    label = { Text(stringResource(R.string.form_label_make)) },
+                    placeholder = { Text(stringResource(R.string.form_placeholder_make)) },
                     trailingIcon = {
                         if (hasCatalog) {
                             ExposedDropdownMenuDefaults.TrailingIcon(expanded = makeExpanded)
@@ -445,8 +451,8 @@ private fun AddCarTab(
                         .menuAnchor(MenuAnchorType.PrimaryEditable, true)
                         .fillMaxWidth(),
                     readOnly = selectedModels.isNotEmpty(),
-                    label = { Text("Model") },
-                    placeholder = { Text("Corolla") },
+                    label = { Text(stringResource(R.string.form_label_model)) },
+                    placeholder = { Text(stringResource(R.string.form_placeholder_model)) },
                     trailingIcon = {
                         if (selectedModels.isNotEmpty()) {
                             ExposedDropdownMenuDefaults.TrailingIcon(expanded = modelExpanded)
@@ -479,8 +485,8 @@ private fun AddCarTab(
                 value = year,
                 onValueChange = { year = it },
                 modifier = Modifier.weight(1f),
-                label = { Text("Year") },
-                placeholder = { Text("2020") },
+                label = { Text(stringResource(R.string.form_label_year)) },
+                placeholder = { Text(stringResource(R.string.form_placeholder_year)) },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             )
@@ -488,8 +494,8 @@ private fun AddCarTab(
                 value = mileage,
                 onValueChange = { mileage = it },
                 modifier = Modifier.weight(1f),
-                label = { Text("Mileage") },
-                placeholder = { Text("42180") },
+                label = { Text(stringResource(R.string.form_label_mileage)) },
+                placeholder = { Text(stringResource(R.string.form_placeholder_mileage)) },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             )
@@ -499,13 +505,13 @@ private fun AddCarTab(
             value = plate,
             onValueChange = { plate = it },
             modifier = Modifier.fillMaxWidth(),
-            label = { Text("Plate") },
-            placeholder = { Text("ABC123") },
+            label = { Text(stringResource(R.string.form_label_plate)) },
+            placeholder = { Text(stringResource(R.string.form_placeholder_plate)) },
             singleLine = true,
         )
 
         FormActions(
-            saveText = "Save Car",
+            saveText = stringResource(R.string.form_save_car),
             saveEnabled = canSave,
             onSave = {
                 onSave(
@@ -539,18 +545,18 @@ private fun SavedItemsTab(
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         FormHeader(
-            title = "Saved Records",
-            subtitle = "Cars and activities saved in local storage",
+            title = stringResource(R.string.form_saved_header_title),
+            subtitle = stringResource(R.string.form_saved_header_subtitle),
         )
 
         Text(
-            text = "Cars (${addedCars.size})",
+            text = stringResource(R.string.form_saved_cars, addedCars.size),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
         )
         if (addedCars.isEmpty()) {
             Text(
-                text = "No cars added yet.",
+                text = stringResource(R.string.form_saved_cars_empty),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         } else {
@@ -560,13 +566,19 @@ private fun SavedItemsTab(
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
                     Text(
-                        text = "${car.nickname} - ${car.make} ${car.model} (${car.year})",
+                        text = stringResource(
+                            R.string.form_saved_car_item,
+                            car.nickname,
+                            car.make,
+                            car.model,
+                            car.year,
+                        ),
                         modifier = Modifier.weight(1f),
                     )
                     IconButton(onClick = { onDeleteCar(car) }) {
                         Icon(
                             imageVector = Icons.Outlined.Delete,
-                            contentDescription = "Delete car",
+                            contentDescription = stringResource(R.string.form_saved_delete_car),
                         )
                     }
                 }
@@ -576,13 +588,13 @@ private fun SavedItemsTab(
         HorizontalDivider()
 
         Text(
-            text = "Activities (${addedActivities.size})",
+            text = stringResource(R.string.form_saved_activities, addedActivities.size),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
         )
         if (addedActivities.isEmpty()) {
             Text(
-                text = "No activities added yet.",
+                text = stringResource(R.string.form_saved_activities_empty),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         } else {
@@ -592,13 +604,18 @@ private fun SavedItemsTab(
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
                     Text(
-                        text = "${activity.date} - ${activity.title} (${activity.carName})",
+                        text = stringResource(
+                            R.string.form_saved_activity_item,
+                            activity.date,
+                            activity.title,
+                            activity.carName,
+                        ),
                         modifier = Modifier.weight(1f),
                     )
                     IconButton(onClick = { onDeleteActivity(activity) }) {
                         Icon(
                             imageVector = Icons.Outlined.Delete,
-                            contentDescription = "Delete activity",
+                            contentDescription = stringResource(R.string.form_saved_delete_activity),
                         )
                     }
                 }
@@ -642,7 +659,7 @@ private fun FormActions(
             onClick = onCancel,
             modifier = Modifier.weight(1f),
         ) {
-            Text("Cancel")
+            Text(stringResource(R.string.form_cancel))
         }
         Button(
             onClick = onSave,

@@ -30,7 +30,7 @@ class AppClosedNotificationReceiver : BroadcastReceiver() {
         val notification = NotificationCompat.Builder(context, NotificationCoordinator.CHANNEL_ID)
             .setSmallIcon(android.R.drawable.ic_dialog_info)
             .setContentTitle(context.getString(R.string.app_name))
-            .setContentText("Your garage is waiting for you.")
+            .setContentText(context.getString(R.string.notification_app_closed_text))
             .setContentIntent(pendingOpenAppIntent)
             .setAutoCancel(true)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)

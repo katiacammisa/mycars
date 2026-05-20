@@ -37,11 +37,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.katiacammisa.mycar.R
 import com.katiacammisa.mycar.home.data.ActivityType
 import com.katiacammisa.mycar.home.data.ActivityUi
 import com.katiacammisa.mycar.home.data.CarSummaryUi
@@ -90,7 +92,7 @@ fun FamilyCarsHomeScreen(
         }
 
         item {
-            SectionTitle(title = "My Cars")
+            SectionTitle(title = stringResource(R.string.home_section_my_cars))
         }
 
         items(cars, key = { it.id }) { car ->
@@ -101,7 +103,7 @@ fun FamilyCarsHomeScreen(
         }
 
         item {
-            SectionTitle(title = "Latest Activity")
+            SectionTitle(title = stringResource(R.string.home_section_latest_activity))
         }
 
         items(latestActivities, key = { it.id }) { activity ->
@@ -135,7 +137,7 @@ private fun WelcomeHeader(
                 .padding(20.dp),
         ) {
             Text(
-                text = "Keep your family vehicles organized",
+                text = stringResource(R.string.home_header_title),
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -144,7 +146,7 @@ private fun WelcomeHeader(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "Add each car with details like make, model, year, mileage, and plate. Then register maintenance like oil changes, tire replacements, inspections, and more.",
+                text = stringResource(R.string.home_header_description),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
             )
@@ -154,8 +156,8 @@ private fun WelcomeHeader(
             Row(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
             ) {
-                StatChip(label = "Cars", value = totalCars.toString())
-                StatChip(label = "Recent logs", value = totalActivities.toString())
+                StatChip(label = stringResource(R.string.home_stat_cars), value = totalCars.toString())
+                StatChip(label = stringResource(R.string.home_stat_recent_logs), value = totalActivities.toString())
             }
         }
     }
@@ -242,13 +244,13 @@ fun CarSummaryCard(
                     fontWeight = FontWeight.Bold,
                 )
                 Text(
-                    text = "${car.year} ${car.make} ${car.model}",
+                    text = stringResource(R.string.home_car_year_make_model, car.year.toString(), car.make, car.model),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 Spacer(modifier = Modifier.height(6.dp))
                 Text(
-                    text = "Plate: ${car.plate} • Mileage: ${car.mileage}",
+                    text = stringResource(R.string.home_car_plate_mileage, car.plate, car.mileage),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -312,7 +314,7 @@ fun ActivityCard(
                 IconButton(onClick = onDelete) {
                     Icon(
                         imageVector = Icons.Outlined.Delete,
-                        contentDescription = "Delete activity",
+                        contentDescription = stringResource(R.string.home_activity_delete),
                     )
                 }
             }
@@ -330,7 +332,7 @@ fun ActivityCard(
             Spacer(modifier = Modifier.height(12.dp))
 
             Text(
-                text = "Mileage at service: ${activity.mileage}",
+                text = stringResource(R.string.home_activity_mileage, activity.mileage),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )

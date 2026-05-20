@@ -24,10 +24,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.katiacammisa.mycar.R
 import com.katiacammisa.mycar.home.data.ActivityUi
 import com.katiacammisa.mycar.home.data.CarSummaryUi
 
@@ -72,11 +74,11 @@ fun CarDetailsScreen(
                 IconButton(onClick = onBack) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
-                        contentDescription = "Back",
+                        contentDescription = stringResource(R.string.car_details_back),
                     )
                 }
                 Text(
-                    text = car?.nickname ?: "Car Details",
+                    text = car?.nickname ?: stringResource(R.string.car_details_title_fallback),
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.weight(1f),
@@ -85,7 +87,7 @@ fun CarDetailsScreen(
                     IconButton(onClick = onDeleteCar) {
                         Icon(
                             imageVector = Icons.Outlined.Delete,
-                            contentDescription = "Delete car",
+                            contentDescription = stringResource(R.string.car_details_delete_car),
                         )
                     }
                 }
@@ -95,17 +97,23 @@ fun CarDetailsScreen(
         item {
             if (car == null) {
                 Text(
-                    text = "This car no longer exists.",
+                    text = stringResource(R.string.car_details_missing),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             } else {
                 Text(
-                    text = "${car.year} ${car.make} ${car.model} • ${car.plate}",
+                    text = stringResource(
+                        R.string.car_details_year_make_model_plate,
+                        car.year.toString(),
+                        car.make,
+                        car.model,
+                        car.plate,
+                    ),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "Mileage: ${car.mileage}",
+                    text = stringResource(R.string.car_details_mileage, car.mileage),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
@@ -113,7 +121,7 @@ fun CarDetailsScreen(
 
         item {
             Text(
-                text = "Activities (${activities.size})",
+                text = stringResource(R.string.car_details_activities, activities.size),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
             )
@@ -122,7 +130,7 @@ fun CarDetailsScreen(
         if (activities.isEmpty()) {
             item {
                 Text(
-                    text = "No activities saved for this car yet.",
+                    text = stringResource(R.string.car_details_empty_activities),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
@@ -175,7 +183,7 @@ private fun CarActivityRow(
             IconButton(onClick = onDelete) {
                 Icon(
                     imageVector = Icons.Outlined.Delete,
-                    contentDescription = "Delete activity",
+                    contentDescription = stringResource(R.string.home_activity_delete),
                 )
             }
         }

@@ -19,9 +19,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.katiacammisa.mycar.R
 
 @Composable
 fun FamilyProfileScreen(
@@ -46,7 +48,7 @@ fun FamilyProfileScreen(
             ) {
                 Icon(
                     imageVector = Icons.Outlined.Star,
-                    contentDescription = "Family avatar",
+                    contentDescription = stringResource(R.string.profile_family_avatar),
                     modifier = Modifier.size(56.dp),
                     tint = MaterialTheme.colorScheme.primary,
                 )
