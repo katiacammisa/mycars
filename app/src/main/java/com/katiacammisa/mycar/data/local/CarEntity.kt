@@ -13,6 +13,7 @@ data class CarEntity(
     val year: Int,
     val plate: String,
     val mileage: String,
+    val photoPath: String?,
     val createdAt: Long,
 )
 
@@ -25,6 +26,7 @@ fun CarEntity.toUi(): CarSummaryUi {
         year = year,
         plate = plate,
         mileage = mileage,
+        photoPath = photoPath,
     )
 }
 
@@ -37,6 +39,7 @@ fun CarSummaryUi.toEntity(createdAt: Long = System.currentTimeMillis()): CarEnti
         year = year,
         plate = plate,
         mileage = mileage,
+        photoPath = photoPath,
         createdAt = createdAt,
     )
 }

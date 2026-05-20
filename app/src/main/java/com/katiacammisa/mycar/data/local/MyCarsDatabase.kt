@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 
 @Database(
     entities = [CarEntity::class, ActivityEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = false,
 )
 abstract class MyCarsDatabase : RoomDatabase() {

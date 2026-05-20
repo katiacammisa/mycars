@@ -8,6 +8,7 @@ data class CarSummaryUi(
     val year: Int,
     val plate: String,
     val mileage: String,
+    val photoPath: String? = null,
 )
 
 data class ActivityUi(

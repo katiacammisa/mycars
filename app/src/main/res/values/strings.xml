@@ -55,6 +55,11 @@
     <string name="form_catalog_loading">Loading make/model catalog...</string>
     <string name="form_retry">Retry</string>
     <string name="form_label_nickname">Nickname</string>
+    <string name="form_import_from_contacts">Import from contacts</string>
+    <string name="form_take_photo">Take photo</string>
+    <string name="form_camera_hint">Take a photo to attach visual context</string>
+    <string name="form_camera_permission_denied">Camera permission is required to take a photo</string>
+    <string name="form_car_photo_preview">Car photo preview</string>
     <string name="form_placeholder_nickname">Dad\'s SUV</string>
     <string name="form_label_make">Make</string>
     <string name="form_placeholder_make">Toyota</string>
@@ -71,9 +76,22 @@
     <string name="form_saved_cars_empty">No cars added yet.</string>
     <string name="form_saved_car_item">%1$s - %2$s %3$s (%4$d)</string>
     <string name="form_saved_delete_car">Delete car</string>
+    <string name="form_share_car">Share car</string>
     <string name="form_saved_activities">Activities (%1$d)</string>
     <string name="form_saved_activities_empty">No activities added yet.</string>
     <string name="form_saved_activity_item">%1$s - %2$s (%3$s)</string>
     <string name="form_saved_delete_activity">Delete activity</string>
+    <string name="form_share_activity">Share activity</string>
+    <string name="share_car_chooser_title">Share car details</string>
+    <string name="share_activity_chooser_title">Share activity details</string>
+    <string name="share_car_template">Car: %1$s
+%2$s %3$s %4$s
+Plate: %5$s
+Mileage: %6$s</string>
+    <string name="share_activity_template">Activity: %1$s
+Car: %2$s
+Date: %3$s
+Mileage: %4$s
+Notes: %5$s</string>
     <string name="form_cancel">Cancel</string>
 </resources>
